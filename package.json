@@ -1,0 +1,32 @@
+{
+  "name": "hack-whale",
+  "version": "1.0.0",
+  "description": "Hackathon: Save the Whale!",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
+    "watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kin-business/hack-whale.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kin-business/hack-whale/issues"
+  },
+  "homepage": "https://github.com/kin-business/hack-whale#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "d3": "^5.12.0",
+    "lodash": "^4.17.15"
+  }
+}
