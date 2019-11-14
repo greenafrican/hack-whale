@@ -1,32 +1,32 @@
 {
-  "name": "hack-whale",
+  "name": "whale",
   "version": "1.0.0",
-  "description": "Hackathon: Save the Whale!",
-  "private": true,
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "webpack-dev-server --open",
-    "watch": "webpack --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kin-business/hack-whale.git"
+    "start": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kin-business/hack-whale/issues"
-  },
-  "homepage": "https://github.com/kin-business/hack-whale#readme",
   "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "babel-loader": "^8.0.6",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "prop-types": "^15.7.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "d3": "^5.12.0",
-    "lodash": "^4.17.15"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
   }
 }
