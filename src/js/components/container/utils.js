@@ -54,7 +54,7 @@ export const getData = people => (
             {
                 date: new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDate()),
                 key: `person${idx}`,
-                value: d.value,
+                value: (d.value > 0) ? d.value : 0,
             }
         ))]
     ), [])
