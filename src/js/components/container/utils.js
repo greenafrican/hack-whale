@@ -1,3 +1,4 @@
+
 const futureValue = (amount, r, n, t) => (
     amount * Math.pow(1 + (r / n), n * t)
 );
@@ -47,7 +48,19 @@ const generateTimeseries = (person) => {
     return monthSeries;
 };
 
-export const updateData = ( people ) => {
+export const getData = people => ( 
+    people.reduce((acc, curr, idx) => (
+        [...acc, ...curr.timeseries.map(d => (
+            {
+                date: new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDate()),
+                key: `person${idx}`,
+                value: d.value,
+            }
+        ))]
+    ), [])
+);
+
+export const updatePeople = ( people ) => {
     const updatedPeople = [];
     people.forEach((person, i) => {
         updatedPeople.push(Object.assign({}, person, {

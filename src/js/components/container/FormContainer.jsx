@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Input from "../presentational/Input.jsx";
-import { updateData } from './utils';
+import { getData, updatePeople } from './utils';
 import D3Chart from "../d3chart/chart.jsx"
 
 const parameters = [
@@ -42,6 +42,35 @@ const parameters = [
     },
 ];
 
+const roundIt = (x) => {
+    switch (true) {
+        case (x < 100):
+            return Math.round(x);
+        case (x < 1000):
+            return Math.round(x / 100) * 100;
+        case (x < 10000):
+            return Math.round(x / 1000) * 1000;
+        case (x < 50000):
+            return Math.floor(x / 5000) * 5000;
+        case (x < 100000):
+            return Math.round(x / 10000) * 10000;
+        case (x < 1000000):
+            return Math.floor(x / 50000) * 50000;
+        case (x >= 1000000):
+            return Math.round(x / 100000) * 100000;
+    }
+}
+
+const logslider = (position, min, max) => {
+    const minp = 0;
+    const maxp = 100;
+    const minv = Math.log(min);
+    const maxv = Math.log(max);
+    const scale = (maxv - minv) / (maxp - minp);
+
+    return roundIt(Math.exp(minv + scale * (position - minp)));
+}
+
 class FormContainer extends Component {
     constructor() {
         super();
@@ -56,18 +85,56 @@ class FormContainer extends Component {
                     contributions: 5000,
                     savings: 100000,
                     timeseries: []
+                }, 
+                {
+                    i: 0.09,
+                    inf: 0.06,
+                    age: 25,
+                    retirementAge: 65,
+                    expenses: 20000,
+                    contributions: 5000,
+                    savings: 100000,
+                    timeseries: []
                 },
+                {
+                    i: 0.09,
+                    inf: 0.06,
+                    age: 25,
+                    retirementAge: 65,
+                    expenses: 20000,
+                    contributions: 5000,
+                    savings: 100000,
+                    timeseries: []
+                },
+                {
+                    i: 0.09,
+                    inf: 0.06,
+                    age: 25,
+                    retirementAge: 65,
+                    expenses: 20000,
+                    contributions: 5000,
+                    savings: 100000,
+                    timeseries: []
+                }
             ]
         };
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(personId, param, event) {
-        const people = [...this.state.people ];
-        people[personId][param] = event.target.value;
-        this.setState({ people: updateData(people) });
+        const nextPeople = [...this.state.people ];
+        nextPeople[personId][param] = parseInt(event.target.value);
+        const people = updatePeople(nextPeople);
+        const data = getData(people);
+        this.setState({ people, data });
     }
     render() {
-        const { people } = this.state;
+        const { people, data } = this.state;
+
+        const myStyle = {
+            'display': 'flex',
+            'flexWrap': 'wrap',
+            'justifyContent': 'space-between'
+        };
 
         const peopleRanges = people.map( ( person, i ) => (
             parameters.map( param => (
@@ -89,10 +156,8 @@ class FormContainer extends Component {
         
         return (
             <div>
-                <D3Chart
-                    data={people[0].timeseries}
-                />
-                { peopleRanges.map( ( person, i ) => ( <div key={i}>{ person }</div> ) ) }
+                <D3Chart data={data} />
+                { peopleRanges.map( ( person, i ) => ( <div style={myStyle} key={i}>{ person }</div> ) ) }
             </div>
         );
     }

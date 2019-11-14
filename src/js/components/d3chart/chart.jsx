@@ -2,6 +2,7 @@
 import React, { Component, createRef } from "react";
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import * as d3array from "d3-array";
 import * as d3 from "d3";
 import D3Base from './d3base/index.jsx';
 
@@ -17,6 +18,13 @@ class D3Chart extends Component {
     drawChart(node) {
         const { data, height, width, margin } = this.props;
 
+        const keys = Array.from(d3array.group(data, d => d.key).keys());
+        const values = Array.from(d3array.rollup(data, ([d]) => d.value, d => +d.date, d => d.key));
+        const series = d3.stack()
+            .keys(keys)
+            .value(([, values], key) => values.get(key))
+            (values);
+
         const g = node
             .attr('id', 'chart')
             .append('g')
@@ -27,8 +35,12 @@ class D3Chart extends Component {
             .range([margin.left, width - margin.right]);
 
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.value)]).nice()
+            .domain([0, d3.max(series, d => d3.max(d, d => d[1]))]).nice()
             .range([height - margin.bottom, margin.top]);
+
+        const color = d3.scaleOrdinal()
+            .domain(keys)
+            .range(d3.schemeCategory10);
 
         const xAxis = g => g
             .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -44,36 +56,28 @@ class D3Chart extends Component {
                 .attr("font-weight", "bold")
                 .text(data.y));
 
-        const line = d3.line()
-            .defined(d => !isNaN(d.value))
-            .x(d => x(d.date))
-            .y(d => y(d.value));
-
-        const curve = d3.curveLinear;
-
         const area = d3.area()
-            .curve(curve)
-            .x(d => x(d.date))
-            .y0(y(0))
-            .y1(d => y(d.value));
+            .x(d => x(d.data[0]))
+            .y0(d => y(d[0]))
+            .y1(d => y(d[1]));
 
         const svg = g.append("svg:svg")
             .attr("viewBox", [0, 0, width, height]);
+
+        svg.append("g")
+            .selectAll("path")
+            .data(series)
+            .join("path")
+            .attr("fill", ({ key }) => color(key))
+            .attr("d", area)
+            .append("title")
+            .text(({ key }) => key);
 
         svg.append("g")
             .call(xAxis);
 
         svg.append("g")
             .call(yAxis);
-
-        svg.append("path")
-            .datum(data)
-            .attr("fill", "steelblue")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("d", area);
     };
 
 
