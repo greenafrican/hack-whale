@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import Input from "../presentational/Input.jsx";
 import { getData, updatePeople, getDataAll } from './utils';
 import D3Chart from "../d3chart/chart.jsx"
+import Lottie from 'react-lottie';
+import * as whaleData from './whale.json'
 
 const parameters = [
     {
@@ -117,6 +119,15 @@ class FormContainer extends Component {
             'justifyContent': 'space-between'
         };
 
+        const defaultOptions = {
+            loop: false,
+            autoplay: true,
+            animationData: whaleData,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
+
         const peopleRanges = people.map( ( person, i ) => (
             parameters.map( param => (
                     <Input
@@ -155,6 +166,9 @@ class FormContainer extends Component {
                 </div>
                 { peopleRanges.map( ( person, i ) => ( <div style={myStyle} key={i}>{ person }</div> ) ) }
                 <button onClick={this.addPerson}>Add Person</button>
+                <Lottie options={defaultOptions}
+                    height={400}
+                    width={400}/>
             </div>
         );
     }
