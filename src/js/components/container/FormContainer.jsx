@@ -135,7 +135,13 @@ class FormContainer extends Component {
             ) )
         ) );
 
-        console.log(people);
+        const endNeg = dataAll[dataAll.length - 1];
+
+        let startNeg = dataAll.find((d) => {
+            return d.value <= 0;
+        }) || endNeg;
+
+        console.log(startNeg.date, endNeg.date);
         
         return (
             <div>
