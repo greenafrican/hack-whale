@@ -48,7 +48,7 @@ const generateTimeseries = (person) => {
     return monthSeries;
 };
 
-export const getData = people => ( 
+export const getData = people => (
     people.reduce((acc, curr, idx) => (
         [...acc, ...curr.timeseries.map(d => (
             {
@@ -60,9 +60,33 @@ export const getData = people => (
     ), [])
 );
 
+export const getDataAll = people => {
+    const all = people.reduce((acc, curr, idx)=> {
+        curr.timeseries.forEach( ( d, i ) => {
+            const thisDate = `${d.date.getFullYear()}${d.date.getMonth()}`;
+            const isSet = acc.findIndex( d => d.date == thisDate );
+            if (isSet >= 0) {
+                acc.find(x => x.date === thisDate).value += d.value;
+            } else {
+                acc.push( {date: thisDate, value: d.value } );
+            }
+        });
+        return acc;
+    }, []);
+    return all.map(d=>{
+        var year = d.date.substring(0, 4);
+        var month = d.date.substring(4, 6);
+
+        var date = new Date(year, month - 1, 1);
+        return {
+            date,
+            value: d.value
+        };
+    }).sort((a, b) => a.date.getTime() - b.date.getTime());
+}
+
 export const updatePeople = ( people ) => {
-    const updatedPeople = [];
-    people.forEach((person, i) => {
+    const updatedPeople = [];    people.forEach((person, i) => {
         updatedPeople.push(Object.assign({}, person, {
             timeseries: generateTimeseries(person).map(d => (
                 { date: d.date, value: d.rollingSavings }

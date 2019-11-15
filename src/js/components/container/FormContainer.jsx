@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Input from "../presentational/Input.jsx";
-import { getData, updatePeople } from './utils';
+import { getData, updatePeople, getDataAll } from './utils';
 import D3Chart from "../d3chart/chart.jsx"
 
 const parameters = [
@@ -125,10 +125,11 @@ class FormContainer extends Component {
         nextPeople[personId][param] = parseInt(event.target.value);
         const people = updatePeople(nextPeople);
         const data = getData(people);
-        this.setState({ people, data });
+        const dataAll = getDataAll(people);
+        this.setState({ people, data, dataAll });
     }
     render() {
-        const { people, data } = this.state;
+        const { people, data, dataAll } = this.state;
 
         const myStyle = {
             'display': 'flex',
@@ -156,7 +157,7 @@ class FormContainer extends Component {
         
         return (
             <div>
-                <D3Chart data={data} />
+                <D3Chart data={dataAll} />
                 { peopleRanges.map( ( person, i ) => ( <div style={myStyle} key={i}>{ person }</div> ) ) }
             </div>
         );
