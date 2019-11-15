@@ -13,6 +13,7 @@ const parameters = [
         min: 20,
         max: 80,
         default: 25,
+        formart: ".2s"
     },
     {
         id: 'retirementAge',
@@ -20,6 +21,7 @@ const parameters = [
         min: 20,
         max: 80,
         default: 65,
+        formart: ".2s"
     },
     {
         id: 'expenses',
@@ -27,6 +29,7 @@ const parameters = [
         min: 5000,
         max: 500000,
         default: 20000,
+        formart: ".2s"
     },
     {
         id: 'contributions',
@@ -34,6 +37,7 @@ const parameters = [
         min: 1000,
         max: 200000,
         default: 5000,
+        formart: ".2s"
     },
     {
         id: 'savings',
@@ -41,27 +45,9 @@ const parameters = [
         min: 0,
         max: 100000000,
         default: 100000,
+        formart: ".2s"
     },
 ];
-
-const roundIt = (x) => {
-    switch (true) {
-        case (x < 100):
-            return Math.round(x);
-        case (x < 1000):
-            return Math.round(x / 100) * 100;
-        case (x < 10000):
-            return Math.round(x / 1000) * 1000;
-        case (x < 50000):
-            return Math.floor(x / 5000) * 5000;
-        case (x < 100000):
-            return Math.round(x / 10000) * 10000;
-        case (x < 1000000):
-            return Math.floor(x / 50000) * 50000;
-        case (x >= 1000000):
-            return Math.round(x / 100000) * 100000;
-    }
-}
 
 const logslider = (position, min, max) => {
     const minp = 0;
@@ -142,6 +128,7 @@ class FormContainer extends Component {
                         key={ `${i.toString()}_${param.id}` }
                         value={person[param.id]}
                         handleChange={this.handleChange}
+                        valueFormat={param.format}
                     />
             ) )
         ) );
@@ -151,8 +138,6 @@ class FormContainer extends Component {
         let startNeg = dataAll.find((d) => {
             return d.value <= 0;
         }) || endNeg;
-
-        console.log(startNeg.date, endNeg.date);
         
         return (
             <div>
@@ -168,7 +153,7 @@ class FormContainer extends Component {
                 <button onClick={this.addPerson}>Add Person</button>
                 <Lottie options={defaultOptions}
                     height={400}
-                    width={400}/>
+                    width={800}/>
             </div>
         );
     }
