@@ -74,49 +74,51 @@ const logslider = (position, min, max) => {
 class FormContainer extends Component {
     constructor() {
         super();
+        const people = [
+            {
+                i: 0.09,
+                inf: 0.06,
+                age: 25,
+                retirementAge: 65,
+                expenses: 20000,
+                contributions: 10000,
+                savings: 100000,
+                timeseries: []
+            },
+            {
+                i: 0.09,
+                inf: 0.06,
+                age: 25,
+                retirementAge: 65,
+                expenses: 20000,
+                contributions: 10000,
+                savings: 100000,
+                timeseries: []
+            },
+            {
+                i: 0.09,
+                inf: 0.06,
+                age: 25,
+                retirementAge: 65,
+                expenses: 20000,
+                contributions: 10000,
+                savings: 100000,
+                timeseries: []
+            },
+            {
+                i: 0.09,
+                inf: 0.06,
+                age: 25,
+                retirementAge: 65,
+                expenses: 20000,
+                contributions: 10000,
+                savings: 100000,
+                timeseries: []
+            }
+        ];
         this.state = {
-            people: [
-                {
-                    i: 0.09,
-                    inf: 0.06,
-                    age: 25,
-                    retirementAge: 65,
-                    expenses: 20000,
-                    contributions: 5000,
-                    savings: 100000,
-                    timeseries: []
-                }, 
-                {
-                    i: 0.09,
-                    inf: 0.06,
-                    age: 25,
-                    retirementAge: 65,
-                    expenses: 20000,
-                    contributions: 5000,
-                    savings: 100000,
-                    timeseries: []
-                },
-                {
-                    i: 0.09,
-                    inf: 0.06,
-                    age: 25,
-                    retirementAge: 65,
-                    expenses: 20000,
-                    contributions: 5000,
-                    savings: 100000,
-                    timeseries: []
-                },
-                {
-                    i: 0.09,
-                    inf: 0.06,
-                    age: 25,
-                    retirementAge: 65,
-                    expenses: 20000,
-                    contributions: 5000,
-                    savings: 100000,
-                    timeseries: []
-                }
-            ]
+            people,
+            dataAll: getDataAll(updatePeople(people))
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -158,6 +160,13 @@ class FormContainer extends Component {
         return (
             <div>
                 <D3Chart data={dataAll} />
+                <div style={myStyle}>
+                    <div>Age</div>
+                    <div>Retirement Age</div>
+                    <div>Monthly Spending</div>
+                    <div>Monthly Contribution</div>
+                    <div>Current Savings</div>
+                </div>
                 { peopleRanges.map( ( person, i ) => ( <div style={myStyle} key={i}>{ person }</div> ) ) }
             </div>
         );
