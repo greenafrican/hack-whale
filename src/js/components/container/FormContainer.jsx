@@ -84,36 +84,6 @@ class FormContainer extends Component {
                 contributions: 10000,
                 savings: 100000,
                 timeseries: []
-            },
-            {
-                i: 0.09,
-                inf: 0.06,
-                age: 25,
-                retirementAge: 65,
-                expenses: 20000,
-                contributions: 10000,
-                savings: 100000,
-                timeseries: []
-            },
-            {
-                i: 0.09,
-                inf: 0.06,
-                age: 25,
-                retirementAge: 65,
-                expenses: 20000,
-                contributions: 10000,
-                savings: 100000,
-                timeseries: []
-            },
-            {
-                i: 0.09,
-                inf: 0.06,
-                age: 25,
-                retirementAge: 65,
-                expenses: 20000,
-                contributions: 10000,
-                savings: 100000,
-                timeseries: []
             }
         ];
         this.state = {
@@ -121,17 +91,25 @@ class FormContainer extends Component {
             dataAll: getDataAll(updatePeople(people))
         };
         this.handleChange = this.handleChange.bind(this);
+        this.addPerson = this.addPerson.bind(this);
+    }
+    addPerson() {
+        const copyPerson = Object.assign({}, this.state.people[0]);
+        const newPeople = [...this.state.people ];
+        newPeople.push(copyPerson);
+        const people = updatePeople(newPeople);
+        const dataAll = getDataAll(people);
+        this.setState({people: newPeople, dataAll});
     }
     handleChange(personId, param, event) {
         const nextPeople = [...this.state.people ];
         nextPeople[personId][param] = parseInt(event.target.value);
         const people = updatePeople(nextPeople);
-        const data = getData(people);
         const dataAll = getDataAll(people);
-        this.setState({ people, data, dataAll });
+        this.setState({ people, dataAll });
     }
     render() {
-        const { people, data, dataAll } = this.state;
+        const { people, dataAll } = this.state;
 
         const myStyle = {
             'display': 'flex',
@@ -156,6 +134,8 @@ class FormContainer extends Component {
                     />
             ) )
         ) );
+
+        console.log(people);
         
         return (
             <div>
@@ -168,6 +148,7 @@ class FormContainer extends Component {
                     <div>Current Savings</div>
                 </div>
                 { peopleRanges.map( ( person, i ) => ( <div style={myStyle} key={i}>{ person }</div> ) ) }
+                <button onClick={this.addPerson}>Add Person</button>
             </div>
         );
     }
